@@ -12,7 +12,6 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import accuracy_score
 
-# Dados
 data = """
 dia,aparencia,temperatura,umidade,ventando,jogar
 d1,sol,Quente,Alta,nao,nao
@@ -45,15 +44,12 @@ X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.3, random_state=42
 )
 
-# Modelos
 rf = RandomForestClassifier()
 nb = CategoricalNB()
 dt = DecisionTreeClassifier()
 
-# StratifiedKFold
 stratified_kfold = StratifiedKFold(n_splits=3, shuffle=True, random_state=42)
 
-# Hiperparâmetros
 param_grid_rf = {
     "n_estimators": [10, 50, 100, 200],
     "max_features": ["sqrt", "log2"],
@@ -66,14 +62,12 @@ param_grid_dt = {
     "max_depth": [2, 4, 6, 8, 10, None],
 }
 
-# Buscas
 rf_grid_search = GridSearchCV(rf, param_grid_rf, cv=stratified_kfold)
 rf_random_search = RandomizedSearchCV(rf, param_grid_rf, n_iter=10, cv=stratified_kfold)
 
 dt_grid_search = GridSearchCV(dt, param_grid_dt, cv=stratified_kfold)
 dt_random_search = RandomizedSearchCV(dt, param_grid_dt, n_iter=10, cv=stratified_kfold)
 
-# Fit
 rf_grid_search.fit(X_train, y_train)
 rf_random_search.fit(X_train, y_train)
 
@@ -82,7 +76,6 @@ dt_random_search.fit(X_train, y_train)
 
 nb.fit(X_train, y_train)
 
-# Predições e acurácias
 models = {
     "Random Forest GridSearch": rf_grid_search,
     "Random Forest RandomSearch": rf_random_search,

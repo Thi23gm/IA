@@ -2,7 +2,6 @@ import pandas as pd
 import io
 from collections import defaultdict
 
-# Lendo o conjunto de dados
 data = """
 dia,aparencia,temperatura,umidade,ventando,jogar
 d1,sol,Quente,Alta,nao,nao
@@ -29,12 +28,10 @@ def naive_bayes_classifier(df, test_data):
     classes = df[target].unique()
     result_probabilities = defaultdict(float)
 
-    # Calcular a probabilidade total de cada classe
     total_records = len(df)
     for c in classes:
         class_prob = len(df[df[target] == c]) / total_records
 
-        # Calcular a probabilidade condicional para cada atributo no registro de teste
         conditional_prob = 1.0
         for attr, value in test_data.items():
             subset = df[df[target] == c]
@@ -42,17 +39,14 @@ def naive_bayes_classifier(df, test_data):
 
         result_probabilities[c] = class_prob * conditional_prob
 
-    # Normalizando as probabilidades para que somem 1
     sum_probs = sum(result_probabilities.values())
     normalized_probs = {
         k: (v / sum_probs) * 100 for k, v in result_probabilities.items()
     }
 
-    # Retorna a classe com a maior probabilidade e as probabilidades normalizadas
     return max(normalized_probs, key=normalized_probs.get), normalized_probs
 
 
-# Testar o classificador
 test_data = {
     "aparencia": "Chuva",
     "temperatura": "Fria",
